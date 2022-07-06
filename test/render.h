@@ -3,8 +3,8 @@
 #include <string.h>
 using namespace std;
 
-typedef unsigned char(frame_mem)[8][128];
-typedef int (frame_shd)[64][128];
+typedef unsigned char(frame_mem)[8][64];
+typedef int (frame_shd)[64][64];
 typedef float (vertex_init_t) [10][3];
 typedef float (vertex_t) [10][3];
 typedef int (vertex_proj_t) [10][2];
@@ -18,7 +18,7 @@ void divider(frame_shd *input, frame_mem *output)
     static frame_mem frm;
    for (int i = 0; i < 8 ;i++)
    {
-        for (int x=0;x<128;x++)
+        for (int x=0;x<64;x++)
         {
             for (int j=0;j<8;j++)
                 {
@@ -122,9 +122,9 @@ void projecter(vertex_t * input, int num_ver, int cam_pos,float view, vertex_pro
         x = (*input)[i][0];
         y = (*input)[i][1];
         z = (*input)[i][2];
-        m = round((x*cam_pos/(cam_pos-z+127))*view/4)+63;
+        m = round((x*cam_pos/(cam_pos-z+127))*view/4)+31;
         n = -round((y*cam_pos/(cam_pos-z+127)*view)/4)+31;
-        if (m>127 or m<0) continue;
+        if (m>63 or m<0) continue;
         if (n>63 or n<0) continue;
         
         (*output)[i][0] = n;
