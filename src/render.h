@@ -9,6 +9,9 @@ typedef float (vertex_init_t) [10][3];
 typedef float (vertex_t) [10][3];
 typedef int (vertex_proj_t) [10][2];
 typedef int (link_t) [100][2];
+typedef float (motion_t)[3];
+
+
 
 void shdtomem(frame_shd *input, frame_mem *output)
 {
@@ -26,15 +29,17 @@ void shdtomem(frame_shd *input, frame_mem *output)
    } 
 }
 
+
 void linker(vertex_proj_t *vertex, link_t *link, frame_shd *output)
 {   
     vertex_proj_t frm={0};
-    int nums = sizeof (*link);
-    for (int i = 0; i < nums; i++)
+    int num_line = sizeof (*link);
+    int pa, qa;
+    int yi,yt,xi,xt;
+    int p[2],q[2];
+        
+    for (int i = 0; i < num_line; i++)
     { 
-        int pa, qa;
-        int yi,yt,xi,xt;
-        int p[2],q[2];
         
         pa = (*link)[i][0];
         qa = (*link)[i][1];
@@ -101,7 +106,40 @@ void line(int p[2],int q[2], vertex_proj_t * frame)
 
 
 
-void projecter()
+void projecter(vertex_t * input, int num_ver, int cam_pos, vertex_proj_t * output)
 {
+    static float x,y,z;
+    static int m,n;
+    for (int i = 0; i < num_ver; i++)
+    {
+        x = (*input)[i][0];
+        y = (*input)[i][1];
+        z = (*input)[i][2];
+        m = round(x*cam_pos/(cam_pos-z+127))+31;
+        n = round(y*cam_pos/(cam_pos-z+127))+31;
+        (*output)[i][0] = n;
+        (*output)[i][1] = m;
+    }
+}
 
+
+void transleter(vertex_t * input, int num_ver, motion_t * tra_par, vertex_t * output)
+{
+    for(int i = 0; i < num_ver; i++ )
+    {
+        for(int j = 0; j < 3; j++)
+        {
+            (* output)[i][j] = (* input)[i][j] + (* tra_par)[j];
+        }
+    } 
+}
+
+void rotater(vertex_t * input, int num_ver, motion_t * rot_par, vertex_t * output)
+{
+    static float yaw, pitch, roll;
+    yaw = (* rot_par)[0];
+    pitch = (* rot_par)[1];
+    roll = (* rot_par)[2];
+
+    
 }
