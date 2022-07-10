@@ -11,7 +11,7 @@ int main()
 
     for (int s = 0; s <180 ;s+=10)
     {
-        rotation[0]= s*3.14/180;
+        rotation[2]= s*3.14/180;
         cube(& printed,&rotation);
         for (int i = 0; i < 64; i++)
         {

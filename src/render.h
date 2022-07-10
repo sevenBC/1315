@@ -4,7 +4,7 @@
 using namespace std;
 
 typedef unsigned char(frame_mem)[8][128];
-typedef int (frame_shd)[64][128];
+typedef uint8_t (frame_shd)[64][128];
 typedef float (vertex_init_t) [10][3];
 typedef float (vertex_t) [10][3];
 typedef int (vertex_proj_t) [10][2];
@@ -168,6 +168,7 @@ void rotater(vertex_t * input, int num_ver, motion_t * rot_par, vertex_t * outpu
     vertex1[0] = vertex0[0] * cos(roll) + vertex0[1] * sin(roll);
     vertex1[1] = vertex0[1] * cos(roll) - vertex0[0] * sin(roll); 
     vertex1[2] = vertex0[2];
+    
     memcpy ((*output)[i],vertex1,sizeof(vertex1));      
     }
     
